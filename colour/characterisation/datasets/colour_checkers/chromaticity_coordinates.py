@@ -969,6 +969,99 @@ Reference *ColorChecker SG* data from *X-Rite (2016)* and matching the
 *ColorChecker SG* edition after November 2014.
 """
 
+
+# %----  New code for P-ONE colour checker
+SAMPLE_LABELS_COLORCHECKER_HAMISH: tuple = (
+    "bluish green", # a6
+    "blue flower", # a5
+    "foliage", # a4
+    "blue sky", # a3
+    "light skin", # a2
+    "dark skin", # a1
+    "orange", # b1
+    "purplish blue", # b2
+    "moderate red", # b3
+    "purple", # b4
+    "yellow green", # b5
+    "orange yellow", # b6
+    "cyan", # c6
+    "magenta", # c5
+    "yellow", # c4
+    "red", # c3
+    "green", # c2
+    "blue", # c1
+    "white 9.5 (.05 D)", # d1
+    "neutral 8 (.23 D)", # d2
+    "neutral 6.5 (.44 D)", # d3
+    "neutral 5 (.70 D)", # d4
+    "neutral 3.5 (1.05 D)", #d5 
+    "black 2 (1.5 D)", # d6
+)
+"""*ColorChecker Classic* modified sample labels."""
+
+DATA_COLORCHECKER24_HAMISH_MODIFIED_CIE_LAB: dict = dict(
+    zip(
+        SAMPLE_LABELS_COLORCHECKER_HAMISH,
+        [
+            np.array([70.48, -32.26, -0.37]), # a6
+            np.array([54.94, 9.61, -24.79]), # a5
+            np.array([43.46, -12.74, 22.72]), # a4
+            np.array([49.32, -3.82, -22.54]), # a3
+            np.array([64.66, 19.27, 17.5]), # a2
+            np.array([37.54, 14.37, 14.92]), # a1
+            np.array([62.73, 35.83, 56.5]), # b1
+            np.array([39.43, 10.75, -45.17]), # b2
+            np.array([50.57, 48.64, 16.67]), # b3
+            np.array([30.1, 22.54, -20.87]), # b4
+            np.array([71.77, -24.13, 58.19]), # b5
+            np.array([71.51, 18.24, 67.37]), # b6
+            np.array([49.57, -29.71, -28.32]), # c6
+            np.array([50.63, 51.28, -14.12]), # c5
+            np.array([81.8, 2.67, 80.41]), # c4
+            np.array([42.43, 51.05, 28.62]), # c3
+            np.array([54.38, -39.72, 32.27]), # c2
+            np.array([28.37, 15.42, -49.8]), # c1
+            np.array([95.19, -1.03, 2.93]), # d1
+            np.array([81.29, -0.57, 0.44]), # d2
+            np.array([66.89, -0.75, -0.06]), # d3
+            np.array([50.76, -0.13, 0.14]), # d4
+            np.array([35.63, -0.46, -0.48]), # d5
+            np.array([20.64, 0.07, -0.46]), # d6
+        ],
+    )
+)
+
+DATA_COLORCHECKER24_HAMISH_MODIFIED: dict = dict(
+    zip(
+        SAMPLE_LABELS_COLORCHECKER_HAMISH,
+        XYZ_to_xyY(
+            Lab_to_XYZ(
+                list(DATA_COLORCHECKER24_HAMISH_MODIFIED_CIE_LAB.values()),
+                CCS_ILLUMINANTS["CIE 1931 2 Degree Standard Observer"]["ICC D50"],
+            )
+        ),
+    )
+)
+
+CCS_ILLUMINANT_COLORCHECKER24_HAMISH_MODIFIED: NDArrayFloat = CCS_ILLUMINANTS[
+    "CIE 1931 2 Degree Standard Observer"
+]["ICC D50"]
+"""*ColorChecker24 - Hamish Modified* illuminant."""
+
+CCS_COLORCHECKER24_HAMISH_MODIFIED: ColourChecker = ColourChecker(
+    "ColorChecker24 - Hamish Modified",
+    DATA_COLORCHECKER24_HAMISH_MODIFIED,
+    CCS_ILLUMINANT_COLORCHECKER24_HAMISH_MODIFIED,
+    4,
+    6,
+)
+"""
+Reference *ColorChecker Classic* data from *X-Rite (2016)* and matching the
+*ColorChecker Classic* edition after November 2014.
+"""
+
+# --------------------------
+
 DATA_TE226_V2_CIE_XYZ: dict = {
     "dark skin": np.array([0.1278, 0.1074, 0.0726]),
     "light skin": np.array([0.4945, 0.4484, 0.3586]),
@@ -1047,6 +1140,7 @@ CCS_COLOURCHECKERS: CanonicalMapping = CanonicalMapping(
         "ColorChecker24 - After November 2014": CCS_COLORCHECKER24_AFTER_NOV2014,
         "ColorCheckerSG - Before November 2014": CCS_COLORCHECKERSG_BEFORE_NOV2014,
         "ColorCheckerSG - After November 2014": CCS_COLORCHECKERSG_AFTER_NOV2014,
+        "ColorChecker24 - Hamish Modified": CCS_COLORCHECKER24_HAMISH_MODIFIED,
         "TE226 V2": CCS_TE226_V2,
     }
 )
